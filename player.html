@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Workout Player</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="player-body">
+  <!-- Back Button -->
+  <a href="workout-list.html" class="back-button back-button--dark" style="position: fixed; top: 20px; left: 20px; z-index: 100;">
+    <svg viewBox="0 0 24 24" fill="currentColor">
+      <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
+    </svg>
+  </a>
+
+  <!-- Player Container -->
+  <div class="player-container">
+    <video
+      class="player-media"
+      id="workoutVideo"
+      autoplay
+      loop
+      muted
+      playsinline
+    >
+      <source src="assets/KettlebellAmericanSwing_4x3.mp4" type="video/mp4">
+    </video>
+  </div>
+
+  <!-- Play/Pause Button -->
+  <div class="play-pause-btn" id="playPauseBtn">
+    <svg viewBox="0 0 24 24" fill="currentColor" id="playIcon">
+      <path d="M8 5v14l11-7z"/>
+    </svg>
+    <svg viewBox="0 0 24 24" fill="currentColor" id="pauseIcon" style="display: none;">
+      <path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/>
+    </svg>
+  </div>
+
+  <!-- Summary Modal -->
+  <div class="summary-overlay" id="summaryModal">
+    <div class="summary-modal">
+      <div class="summary-handle"></div>
+      <div class="summary-header">
+        <div class="summary-close" id="summaryClose">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+          </svg>
+        </div>
+        <div class="summary-share">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="24" height="24">
+            <path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92s2.92-1.31 2.92-2.92-1.31-2.92-2.92-2.92z"/>
+          </svg>
+        </div>
+      </div>
+
+      <div class="summary-content">
+        <div class="completion-section">
+          <div class="completion-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+              <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+            </svg>
+          </div>
+          <h1 class="completion-title">Workout Complete!</h1>
+          <p class="completion-subtitle">Core Power - Flexibility</p>
+        </div>
+
+        <div class="stats-grid">
+          <div class="stat-card featured">
+            <svg class="stat-card-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+            </svg>
+            <div class="stat-card-value">29:00</div>
+            <div class="stat-card-label">Total Duration</div>
+          </div>
+
+          <div class="stat-card">
+            <svg class="stat-card-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67z"/>
+            </svg>
+            <div class="stat-card-value">236</div>
+            <div class="stat-card-label">Calories</div>
+          </div>
+
+          <div class="stat-card">
+            <svg class="stat-card-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <div class="stat-card-value">142</div>
+            <div class="stat-card-label">Avg Heart Rate</div>
+          </div>
+
+          <div class="stat-card">
+            <svg class="stat-card-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+            </svg>
+            <div class="stat-card-value">164</div>
+            <div class="stat-card-label">Max Heart Rate</div>
+          </div>
+
+          <div class="stat-card">
+            <svg class="stat-card-icon" viewBox="0 0 24 24" fill="currentColor">
+              <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
+            </svg>
+            <div class="stat-card-value">26</div>
+            <div class="stat-card-label">Active Minutes</div>
+          </div>
+        </div>
+
+        <div class="points-section">
+          <span class="points-label">Points Earned</span>
+          <span class="points-value">+125</span>
+        </div>
+      </div>
+
+      <div class="summary-actions">
+        <a href="index.html" class="btn-primary" id="doneButton">Done</a>
+        <a href="workout-list.html" class="btn-secondary">Start Another Workout</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Controls Overlay -->
+  <div class="controls-overlay">
+    <div class="timer-row">
+      <span class="timer-value" id="timerDisplay">00:10</span>
+      <div class="progress-container">
+        <div class="progress-segment completed"></div>
+        <div class="progress-segment completed"></div>
+        <div class="progress-segment completed"></div>
+        <div class="progress-segment completed"></div>
+        <div class="progress-segment completed"></div>
+        <div class="progress-segment completed"></div>
+        <div class="progress-segment current"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+      </div>
+    </div>
+
+    <div class="stats-row">
+      <div class="stat-item">
+        <div class="stat-icon time">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M11.99 2C6.47 2 2 6.48 2 12s4.47 10 9.99 10C17.52 22 22 17.52 22 12S17.52 2 11.99 2zM12 20c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.5-13H11v6l5.25 3.15.75-1.23-4.5-2.67z"/>
+          </svg>
+        </div>
+        <span class="stat-value">29:00</span>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon heart">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+          </svg>
+        </div>
+        <span class="stat-value">164</span>
+      </div>
+      <div class="stat-item">
+        <div class="stat-icon calories">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="18" height="18">
+            <path d="M13.5.67s.74 2.65.74 4.8c0 2.06-1.35 3.73-3.41 3.73-2.07 0-3.63-1.67-3.63-3.73l.03-.36C5.21 7.51 4 10.62 4 14c0 4.42 3.58 8 8 8s8-3.58 8-8C20 8.61 17.41 3.8 13.5.67zM11.71 19c-1.78 0-3.22-1.4-3.22-3.14 0-1.62 1.05-2.76 2.81-3.12 1.77-.36 3.6-1.21 4.62-2.58.39 1.29.59 2.65.59 4.04 0 2.65-2.15 4.8-4.8 4.8z"/>
+          </svg>
+        </div>
+        <span class="stat-value">236</span>
+      </div>
+    </div>
+  </div>
+
+  <script src="app.js"></script>
+  <script>
+    // Initialize video seamless loop
+    initVideoLoop('#workoutVideo');
+
+    // Initialize player controls
+    const playerControls = initPlayerControls();
+
+    // Initialize summary modal
+    initSummaryModal();
+
+    // Get workout type from URL
+    const workoutType = getWorkoutTypeFromURL();
+
+    // Timer simulation
+    let seconds = 10;
+    const timerDisplay = document.getElementById('timerDisplay');
+    const summaryModal = document.getElementById('summaryModal');
+    const video = document.getElementById('workoutVideo');
+
+    setInterval(() => {
+      if (playerControls.isPlaying() && seconds > 0) {
+        seconds--;
+        timerDisplay.textContent = formatTime(seconds);
+
+        // Show summary modal when timer ends
+        if (seconds === 0) {
+          video.pause();
+          playerControls.setPlaying(false);
+          summaryModal.classList.add('active');
+        }
+      }
+    }, 1000);
+
+    // Store workout completion when Done is clicked
+    document.getElementById('doneButton').addEventListener('click', function(e) {
+      e.preventDefault();
+      storeWorkoutCompletion(workoutType, 125);
+      window.location.href = 'index.html';
+    });
+  </script>
+</body>
+</html>
