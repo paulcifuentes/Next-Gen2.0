@@ -114,13 +114,91 @@
     .recommended-icon { width: 78px; height: 78px; margin-bottom: 8px; }
 
     /* Food Log */
-    .food-log { padding: 12px 24px; background: #FFFFFF; }
-    .food-log-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-    .food-log-title { font-size: 14px; font-weight: 600; }
-    .camera-icon { width: 20px; height: 20px; opacity: 0.6; }
-    .food-log-subtitle { font-size: 11px; opacity: 0.6; margin-bottom: 12px; }
-    .food-images { display: flex; gap: 8px; }
-    .food-image { width: 48px; height: 48px; border-radius: 50%; background: #E0E0E0; background-size: cover; background-position: center; }
+    .food-log {
+      margin: 0;
+      padding: 20px 24px;
+      background: #FFFFFF;
+      border-radius: 0;
+      color: #0A0A0A;
+    }
+    .food-log-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 20px;
+    }
+    .food-log-title-section { display: flex; flex-direction: column; gap: 4px; }
+    .food-log-title { font-size: 20px; font-weight: 700; color: #0A0A0A; }
+    .food-log-date { font-size: 13px; color: #14E25A; font-weight: 500; }
+    .food-log-add-btn {
+      width: 40px;
+      height: 40px;
+      background: #14E25A;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease;
+    }
+    .food-log-add-btn:hover { transform: scale(1.05); }
+    .food-log-add-btn svg { width: 20px; height: 20px; color: #0A0A0A; }
+    .food-log-macros {
+      display: flex;
+      justify-content: space-around;
+      margin-bottom: 20px;
+      padding: 16px 0;
+      border-top: 1px solid rgba(0,0,0,0.08);
+      border-bottom: 1px solid rgba(0,0,0,0.08);
+    }
+    .macro-item { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .macro-ring { position: relative; width: 56px; height: 56px; }
+    .macro-ring svg { width: 100%; height: 100%; }
+    .macro-value {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      font-size: 12px;
+      font-weight: 700;
+      color: #0A0A0A;
+    }
+    .macro-label { font-size: 12px; color: rgba(0,0,0,0.5); font-weight: 500; }
+    .food-log-meals { display: flex; gap: 12px; overflow-x: auto; scrollbar-width: none; }
+    .food-log-meals::-webkit-scrollbar { display: none; }
+    .meal-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      min-width: 70px;
+    }
+    .meal-image {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      background: #F4F5F6;
+      background-size: cover;
+      background-position: center;
+      border: 2px solid rgba(0,0,0,0.05);
+    }
+    .meal-info { display: flex; flex-direction: column; align-items: center; gap: 2px; }
+    .meal-name { font-size: 12px; font-weight: 600; color: #0A0A0A; }
+    .meal-cal { font-size: 10px; color: rgba(0,0,0,0.4); }
+    .meal-item-add .meal-add-icon {
+      width: 56px;
+      height: 56px;
+      border-radius: 16px;
+      border: 2px dashed rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: border-color 0.2s ease;
+    }
+    .meal-item-add .meal-add-icon:hover { border-color: #14E25A; }
+    .meal-item-add .meal-add-icon svg { width: 24px; height: 24px; color: rgba(0,0,0,0.3); }
+    .meal-item-add .meal-name { color: rgba(0,0,0,0.4); }
 
     /* Connect Device */
     .connect-device { margin: 0 24px; width: 354px; height: 70.5px; background: #000000; color: white; border-radius: 14px; padding: 16px; display: flex; align-items: center; justify-content: center; gap: 16px; cursor: pointer; font-size: 16px; font-weight: 500; }
@@ -231,9 +309,78 @@
 
     <!-- Food Log -->
     <div class="food-log">
-      <div class="food-log-header"><div class="food-log-title">Food log</div><svg class="camera-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.2c-1.8 0-3.2-1.4-3.2-3.2s1.4-3.2 3.2-3.2 3.2 1.4 3.2 3.2-1.4 3.2-3.2 3.2zm8-10.2h-3.2l-1.9-2H9.1L7.2 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/></svg></div>
-      <div class="food-log-subtitle">Track your food</div>
-      <div class="food-images"><div class="food-image" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop')"></div><div class="food-image" style="background-image: url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=100&h=100&fit=crop')"></div><div class="food-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&h=100&fit=crop')"></div></div>
+      <div class="food-log-header">
+        <div class="food-log-title-section">
+          <div class="food-log-title">Today's Nutrition</div>
+          <div class="food-log-date">1,847 cal consumed</div>
+        </div>
+        <div class="food-log-add-btn">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.2c-1.8 0-3.2-1.4-3.2-3.2s1.4-3.2 3.2-3.2 3.2 1.4 3.2 3.2-1.4 3.2-3.2 3.2zm8-10.2h-3.2l-1.9-2H9.1L7.2 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/></svg>
+        </div>
+      </div>
+      <div class="food-log-macros">
+        <div class="macro-item">
+          <div class="macro-ring macro-ring-protein">
+            <svg viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#E8E8E8" stroke-width="3"/>
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#FF6B6B" stroke-width="3" stroke-dasharray="75 100" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+            </svg>
+            <span class="macro-value">75g</span>
+          </div>
+          <span class="macro-label">Protein</span>
+        </div>
+        <div class="macro-item">
+          <div class="macro-ring macro-ring-carbs">
+            <svg viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#E8E8E8" stroke-width="3"/>
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#4ECDC4" stroke-width="3" stroke-dasharray="60 100" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+            </svg>
+            <span class="macro-value">180g</span>
+          </div>
+          <span class="macro-label">Carbs</span>
+        </div>
+        <div class="macro-item">
+          <div class="macro-ring macro-ring-fat">
+            <svg viewBox="0 0 36 36">
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#E8E8E8" stroke-width="3"/>
+              <circle cx="18" cy="18" r="15.5" fill="none" stroke="#FFE66D" stroke-width="3" stroke-dasharray="45 100" stroke-linecap="round" transform="rotate(-90 18 18)"/>
+            </svg>
+            <span class="macro-value">52g</span>
+          </div>
+          <span class="macro-label">Fat</span>
+        </div>
+      </div>
+      <div class="food-log-meals">
+        <div class="meal-item">
+          <div class="meal-image" style="background-image: url('https://images.unsplash.com/photo-1546069901-ba9599a7e63c?w=100&h=100&fit=crop')"></div>
+          <div class="meal-info">
+            <span class="meal-name">Breakfast</span>
+            <span class="meal-cal">485 cal</span>
+          </div>
+        </div>
+        <div class="meal-item">
+          <div class="meal-image" style="background-image: url('https://images.unsplash.com/photo-1567620905732-2d1ec7ab7445?w=100&h=100&fit=crop')"></div>
+          <div class="meal-info">
+            <span class="meal-name">Lunch</span>
+            <span class="meal-cal">720 cal</span>
+          </div>
+        </div>
+        <div class="meal-item">
+          <div class="meal-image" style="background-image: url('https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=100&h=100&fit=crop')"></div>
+          <div class="meal-info">
+            <span class="meal-name">Snack</span>
+            <span class="meal-cal">245 cal</span>
+          </div>
+        </div>
+        <div class="meal-item meal-item-add">
+          <div class="meal-add-icon">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M19 13h-6v6h-2v-6H5v-2h6V5h2v6h6v2z"/></svg>
+          </div>
+          <div class="meal-info">
+            <span class="meal-name">Add meal</span>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- Connect Device -->
