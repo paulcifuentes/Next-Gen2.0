@@ -115,6 +115,81 @@
           <span class="points-label">Points Earned</span>
           <span class="points-value">+125</span>
         </div>
+
+        <!-- RPE Feedback Section -->
+        <div class="feedback-section">
+          <h3 class="feedback-title">How hard was this workout?</h3>
+          <p class="feedback-subtitle">Rate your perceived exertion (RPE)</p>
+          <div class="rpe-scale">
+            <button class="rpe-btn" data-rpe="1">
+              <span class="rpe-number">1</span>
+              <span class="rpe-label">Very Easy</span>
+            </button>
+            <button class="rpe-btn" data-rpe="2">
+              <span class="rpe-number">2</span>
+              <span class="rpe-label">Easy</span>
+            </button>
+            <button class="rpe-btn" data-rpe="3">
+              <span class="rpe-number">3</span>
+              <span class="rpe-label">Moderate</span>
+            </button>
+            <button class="rpe-btn" data-rpe="4">
+              <span class="rpe-number">4</span>
+              <span class="rpe-label">Hard</span>
+            </button>
+            <button class="rpe-btn" data-rpe="5">
+              <span class="rpe-number">5</span>
+              <span class="rpe-label">Max Effort</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Exercise Log Section -->
+        <div class="feedback-section">
+          <h3 class="feedback-title">Log Your Sets</h3>
+          <p class="feedback-subtitle">Record reps and weight for each movement</p>
+          <div class="exercise-log" id="exerciseLog">
+            <div class="exercise-item">
+              <div class="exercise-name">Kettlebell Swing</div>
+              <div class="exercise-inputs">
+                <div class="input-group">
+                  <label>Reps</label>
+                  <input type="number" class="exercise-input" placeholder="0" min="0">
+                </div>
+                <div class="input-group">
+                  <label>Weight (lbs)</label>
+                  <input type="number" class="exercise-input" placeholder="0" min="0">
+                </div>
+              </div>
+            </div>
+            <div class="exercise-item">
+              <div class="exercise-name">Goblet Squat</div>
+              <div class="exercise-inputs">
+                <div class="input-group">
+                  <label>Reps</label>
+                  <input type="number" class="exercise-input" placeholder="0" min="0">
+                </div>
+                <div class="input-group">
+                  <label>Weight (lbs)</label>
+                  <input type="number" class="exercise-input" placeholder="0" min="0">
+                </div>
+              </div>
+            </div>
+            <div class="exercise-item">
+              <div class="exercise-name">Turkish Get-Up</div>
+              <div class="exercise-inputs">
+                <div class="input-group">
+                  <label>Reps</label>
+                  <input type="number" class="exercise-input" placeholder="0" min="0">
+                </div>
+                <div class="input-group">
+                  <label>Weight (lbs)</label>
+                  <input type="number" class="exercise-input" placeholder="0" min="0">
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
 
       <div class="summary-actions">
@@ -206,10 +281,44 @@
       }
     }, 1000);
 
+    // RPE Button Selection
+    const rpeButtons = document.querySelectorAll('.rpe-btn');
+    let selectedRPE = null;
+
+    rpeButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        rpeButtons.forEach(b => b.classList.remove('selected'));
+        this.classList.add('selected');
+        selectedRPE = parseInt(this.dataset.rpe);
+      });
+    });
+
+    // Collect feedback data
+    function collectFeedbackData() {
+      const exerciseItems = document.querySelectorAll('.exercise-item');
+      const exercises = [];
+
+      exerciseItems.forEach(item => {
+        const name = item.querySelector('.exercise-name').textContent;
+        const inputs = item.querySelectorAll('.exercise-input');
+        exercises.push({
+          name: name,
+          reps: parseInt(inputs[0].value) || 0,
+          weight: parseInt(inputs[1].value) || 0
+        });
+      });
+
+      return {
+        rpe: selectedRPE,
+        exercises: exercises
+      };
+    }
+
     // Store workout completion when Done is clicked
     document.getElementById('doneButton').addEventListener('click', function(e) {
       e.preventDefault();
-      storeWorkoutCompletion(workoutType, 125);
+      const feedback = collectFeedbackData();
+      storeWorkoutCompletion(workoutType, 125, feedback);
       window.location.href = 'index.html';
     });
   </script>

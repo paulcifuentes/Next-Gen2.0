@@ -279,12 +279,18 @@ function checkWorkoutCompletion() {
  * Store workout completion data
  * Call this when workout is completed (on player page)
  */
-function storeWorkoutCompletion(workoutType, points = 125) {
-  localStorage.setItem('workoutCompleted', JSON.stringify({
+function storeWorkoutCompletion(workoutType, points = 125, feedback = null) {
+  const completionData = {
     workout: workoutType,
     timestamp: Date.now(),
     points: points
-  }));
+  };
+
+  if (feedback) {
+    completionData.feedback = feedback;
+  }
+
+  localStorage.setItem('workoutCompleted', JSON.stringify(completionData));
 }
 
 /**
@@ -410,6 +416,165 @@ function initWorkoutTimer(startSeconds, onTick, onComplete) {
   };
 }
 
+/**
+ * AI Chat Interface
+ * Handles the chat view transitions and dummy AI responses
+ */
+const aiChatResponses = {
+  about: {
+    userMessage: "Tell me about you",
+    aiResponse: "I'd love to learn more about you, Mark! What are your main fitness goals right now? Understanding your interests helps me personalize your experience and recommend the right workouts for you."
+  },
+  feeling: {
+    userMessage: "How are you feeling today?",
+    aiResponse: "Thanks for checking in! How would you describe your energy level today? Based on how you're feeling, I can adjust today's workout intensity to match your needs."
+  },
+  food: {
+    userMessage: "Food scan",
+    aiResponse: "Great! Let's log your nutrition. What did you have for your last meal? I can help you track macros, calories, and identify patterns in your eating habits."
+  },
+  mobility: {
+    userMessage: "Mobility scan",
+    aiResponse: "Let's assess your mobility! I'll guide you through a quick series of movements to check your hip flexibility, shoulder mobility, and spine rotation. Ready to start?"
+  },
+  body: {
+    userMessage: "Body comp scan",
+    aiResponse: "Time to check your progress! Body composition tracking helps us see changes beyond the scale. Would you like to input your measurements manually, or connect to a smart scale?"
+  }
+};
+
+function initAIChat() {
+  const menuView = document.getElementById('aiMenuView');
+  const chatView = document.getElementById('aiChatView');
+  const chatMessages = document.getElementById('chatMessages');
+  const chatBackBtn = document.getElementById('chatBackBtn');
+  const modalBottom = document.getElementById('aiModalBottom');
+  const textInput = document.getElementById('aiTextInput');
+  const sendBtn = document.getElementById('aiSendBtn');
+  const actionsContainer = document.getElementById('aiActions');
+  const aiModal = document.getElementById('aiModal');
+
+  if (!menuView || !chatView || !chatMessages || !modalBottom) {
+    return;
+  }
+
+  // Direct click handlers on each card
+  const actionCards = document.querySelectorAll('.ai-action-card[data-action]');
+
+  actionCards.forEach(function(card) {
+    card.addEventListener('click', function() {
+      const action = this.getAttribute('data-action');
+      if (action && aiChatResponses[action]) {
+        openChatView(action);
+      }
+    });
+  });
+
+  // Handle back button
+  if (chatBackBtn) {
+    chatBackBtn.addEventListener('click', closeChatView);
+  }
+
+  // Handle send button
+  if (sendBtn) {
+    sendBtn.addEventListener('click', sendUserMessage);
+  }
+
+  // Handle enter key in input
+  if (textInput) {
+    textInput.addEventListener('keypress', function(e) {
+      if (e.key === 'Enter') {
+        sendUserMessage();
+      }
+    });
+  }
+
+  // Reset to menu view when modal is closed
+  if (aiModal) {
+    aiModal.addEventListener('click', function(e) {
+      if (e.target === aiModal) {
+        closeChatView();
+      }
+    });
+  }
+
+  function openChatView(action) {
+    const response = aiChatResponses[action];
+
+    // Clear previous messages
+    chatMessages.innerHTML = '';
+
+    // Switch views
+    menuView.classList.add('hidden');
+    chatView.classList.add('active');
+    modalBottom.classList.add('chat-mode');
+
+    // Add user message (what they selected)
+    addMessage(response.userMessage, 'user');
+
+    // Add single AI response with typing animation
+    setTimeout(function() {
+      const typingId = showTypingIndicator();
+      setTimeout(function() {
+        removeTypingIndicator(typingId);
+        addMessage(response.aiResponse, 'ai');
+        // Focus input after AI responds
+        if (textInput) textInput.focus();
+      }, 1200);
+    }, 600);
+  }
+
+  function closeChatView() {
+    chatView.classList.remove('active');
+    menuView.classList.remove('hidden');
+    modalBottom.classList.remove('chat-mode');
+    chatMessages.innerHTML = '';
+  }
+
+  function addMessage(text, type) {
+    const messageEl = document.createElement('div');
+    messageEl.className = 'chat-message ' + type;
+    messageEl.textContent = text;
+    chatMessages.appendChild(messageEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+  }
+
+  function showTypingIndicator() {
+    const typingEl = document.createElement('div');
+    typingEl.className = 'chat-message ai';
+    typingEl.id = 'typing-' + Date.now();
+    typingEl.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+    chatMessages.appendChild(typingEl);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
+    return typingEl.id;
+  }
+
+  function removeTypingIndicator(id) {
+    const typingEl = document.getElementById(id);
+    if (typingEl) {
+      typingEl.remove();
+    }
+  }
+
+  function sendUserMessage() {
+    if (!textInput) return;
+    const text = textInput.value.trim();
+    if (!text) return;
+
+    addMessage(text, 'user');
+    textInput.value = '';
+
+    // Simulate AI response
+    setTimeout(function() {
+      const typingId = showTypingIndicator();
+      setTimeout(function() {
+        removeTypingIndicator(typingId);
+        addMessage("Thanks for sharing! I'm here to help you on your wellness journey. What else would you like to know?", 'ai');
+      }, 1200);
+    }, 400);
+  }
+}
+
 // Export for module usage (if needed in future)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -429,6 +594,7 @@ if (typeof module !== 'undefined' && module.exports) {
     initPlayerControls,
     initSummaryModal,
     formatTime,
-    initWorkoutTimer
+    initWorkoutTimer,
+    initAIChat
   };
 }
