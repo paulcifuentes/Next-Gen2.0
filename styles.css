@@ -79,6 +79,19 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
+/* Workout list pages: hero stays fixed, content scrolls */
+body:has(> .hero) {
+  height: 100vh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body:has(> .hero) > .main-content {
+  flex: 1;
+  overflow-y: auto;
+}
+
 a {
   text-decoration: none;
   color: inherit;
@@ -359,6 +372,7 @@ img, video {
   position: relative;
   height: 240px;
   overflow: hidden;
+  flex-shrink: 0;
 }
 
 .hero-video {

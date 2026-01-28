@@ -94,12 +94,72 @@ function initButtonHoverEffects(selector) {
  * Initialize mood selection (single select)
  */
 function initMoodSelection() {
+  const moodMap = {
+    'Happy': 'mood-happy',
+    'Neutral': 'mood-neutral',
+    'Sad': 'mood-sad'
+  };
+
   document.querySelectorAll('.mood-option').forEach(option => {
     option.addEventListener('click', function() {
+      // Highlight selected mood
       document.querySelectorAll('.mood-option').forEach(o => {
         o.style.background = '#F4F5F6';
       });
       this.style.background = '#14E25A';
+
+      // Determine which mood was selected from the img alt text
+      const img = this.querySelector('img');
+      const moodKey = img ? moodMap[img.alt] : null;
+
+      if (moodKey && aiChatResponses[moodKey]) {
+        // Open AI modal and go straight to chat view
+        const aiModal = document.getElementById('aiModal');
+        const menuView = document.getElementById('aiMenuView');
+        const chatView = document.getElementById('aiChatView');
+        const chatMessages = document.getElementById('chatMessages');
+        const modalBottom = document.getElementById('aiModalBottom');
+        const textInput = document.getElementById('aiTextInput');
+
+        if (aiModal && menuView && chatView && chatMessages && modalBottom) {
+          // Open the modal
+          aiModal.classList.add('active');
+          document.body.style.overflow = 'hidden';
+
+          // Switch to chat view
+          chatMessages.innerHTML = '';
+          menuView.classList.add('hidden');
+          chatView.classList.add('active');
+          modalBottom.classList.add('chat-mode');
+
+          const response = aiChatResponses[moodKey];
+
+          // Add user message
+          const userMsg = document.createElement('div');
+          userMsg.className = 'chat-message user';
+          userMsg.textContent = response.userMessage;
+          chatMessages.appendChild(userMsg);
+
+          // Add AI response with typing animation
+          setTimeout(function() {
+            const typingEl = document.createElement('div');
+            typingEl.className = 'chat-message ai';
+            typingEl.innerHTML = '<div class="typing-indicator"><span></span><span></span><span></span></div>';
+            chatMessages.appendChild(typingEl);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+
+            setTimeout(function() {
+              typingEl.remove();
+              const aiMsg = document.createElement('div');
+              aiMsg.className = 'chat-message ai';
+              aiMsg.textContent = response.aiResponse;
+              chatMessages.appendChild(aiMsg);
+              chatMessages.scrollTop = chatMessages.scrollHeight;
+              if (textInput) textInput.focus();
+            }, 1200);
+          }, 600);
+        }
+      }
     });
   });
 }
@@ -421,6 +481,18 @@ function initWorkoutTimer(startSeconds, onTick, onComplete) {
  * Handles the chat view transitions and dummy AI responses
  */
 const aiChatResponses = {
+  'mood-happy': {
+    userMessage: "I'm feeling great today!",
+    aiResponse: "That's awesome to hear! When you're feeling this good, it's the perfect time to push a little harder. How about trying a high-intensity workout today? Your positive energy can fuel some serious gains. Want me to suggest something challenging?"
+  },
+  'mood-neutral': {
+    userMessage: "I'm feeling okay today.",
+    aiResponse: "Thanks for checking in! A steady day is a great foundation. A moderate workout could help lift your energy even more. How about a balanced session — some strength work mixed with stretching? I'll find something that matches your vibe."
+  },
+  'mood-sad': {
+    userMessage: "I'm not feeling great today.",
+    aiResponse: "I appreciate you sharing that. On days like this, gentle movement can really help. How about a light breathing session or a calming stretch routine? No pressure — even a short walk counts. What sounds manageable right now?"
+  },
   about: {
     userMessage: "Tell me about you",
     aiResponse: "I'd love to learn more about you, Mark! What are your main fitness goals right now? Understanding your interests helps me personalize your experience and recommend the right workouts for you."
