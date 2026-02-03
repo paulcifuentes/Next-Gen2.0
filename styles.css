@@ -157,6 +157,11 @@ img, video {
   width: 40px;
 }
 
+.header-logo {
+  height: 48px;
+  width: auto;
+}
+
 /* Top Navigation (Home page) */
 .top-nav {
   display: flex;
@@ -423,6 +428,82 @@ img, video {
 .challenge-subtitle {
   font-size: 14px;
   opacity: 0.8;
+}
+
+/* ===========================================
+   FEATURE CARDS (Home Page)
+   =========================================== */
+.feature-cards {
+  display: flex;
+  gap: 14px;
+  padding: 0 16px;
+}
+
+.feature-card {
+  flex: 1;
+  height: 261px;
+  border-radius: var(--radius-md);
+  overflow: hidden;
+  position: relative;
+  background: #9BF4E2;
+  display: flex;
+  flex-direction: column;
+  padding: 16px 9px;
+}
+
+.feature-card.with-image {
+  background-size: cover;
+  background-position: center;
+}
+
+.feature-card.with-image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: rgba(11, 11, 11, 0.70);
+}
+
+.feature-badge {
+  position: absolute;
+  top: var(--space-lg);
+  left: var(--space-lg);
+  background: var(--color-primary);
+  color: var(--color-text);
+  font-size: 10px;
+  font-weight: 700;
+  padding: var(--space-xs) var(--space-sm);
+  border-radius: var(--radius-xs);
+  text-transform: uppercase;
+  z-index: 1;
+}
+
+.feature-content {
+  position: relative;
+  z-index: 1;
+  margin-top: auto;
+  text-align: center;
+}
+
+.feature-card.with-image .feature-content {
+  color: white;
+}
+
+.feature-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+}
+
+.feature-subtitle {
+  font-size: 13px;
+  opacity: 0.8;
+}
+
+.mepod-icon,
+.recommended-icon {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 12px;
 }
 
 /* ===========================================
