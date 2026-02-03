@@ -209,14 +209,17 @@
       color: rgba(10, 10, 10, 0.4);
     }
 
-    /* Challenge Card */
-    .challenge-card { margin: 0; border-radius: 0; overflow: hidden; position: relative; height: 327px; background-size: cover; background-position: center; background-color: #FFFFFF; display: block; text-decoration: none; transition: transform 0.2s ease; }
+    /* Challenge Card - Following Design System */
+    .challenge-card { margin: 0; border-radius: 0; overflow: hidden; position: relative; height: 327px; background-size: cover; background-position: center; display: block; text-decoration: none; transition: all 0.2s ease; }
     .challenge-card:active { transform: scale(0.98); }
-    .challenge-card::before { content: ''; position: absolute; inset: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.7) 100%); }
-    .challenge-badge { position: absolute; top: 16px; left: 16px; background: #14E25A; color: #0A0A0A; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 3px; text-transform: uppercase; }
-    .challenge-content { position: absolute; bottom: 24px; left: 16px; right: 16px; color: white; display: flex; justify-content: space-between; align-items: flex-end; }
-    .challenge-title { font-size: 20px; font-weight: 600; }
-    .challenge-subtitle { font-size: 14px; font-weight: 400; opacity: 0.8; margin-top: 6px; }
+    .challenge-card::before { content: ''; position: absolute; top: 0; left: 0; right: 0; bottom: 0; background: linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.6) 100%); }
+    .challenge-content { position: absolute; left: 18px; right: 18px; top: 24px; bottom: 24px; display: flex; flex-direction: column; justify-content: space-between; z-index: 1; }
+    .challenge-badge { align-self: flex-start; background: #14E25A; color: #0A0A0A; font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 4px; text-transform: uppercase; }
+    .challenge-bottom { display: flex; justify-content: space-between; align-items: flex-end; color: #FFFFFF; }
+    .challenge-text { flex: 1; }
+    .challenge-bottom .arrow-button { width: 42px; height: 42px; background: #FFFFFF; border-radius: 50%; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
+    .challenge-title { font-size: 20px; font-weight: 600; line-height: 1.2; }
+    .challenge-subtitle { font-size: 14px; font-weight: 400; opacity: 0.8; margin-top: 6px; line-height: 1.5; }
 
     /* Feature Cards */
     .feature-cards { display: flex; gap: 14px; padding: 0 16px; }
@@ -315,7 +318,7 @@
     .rewards-subtitle { font-size: 14px; font-weight: 400; opacity: 0.7; margin-top: 4px; }
 
     /* Marketplace Card */
-    .marketplace-card { margin: 0; border-radius: 0; overflow: hidden; position: relative; height: 327px; background-image: url('assets/marketplace-image.png'); background-size: cover; background-position: center; }
+    .marketplace-card { margin: 0; border-radius: 0; overflow: hidden; position: relative; height: 327px; background-image: url('/assets/marketplace-image.png'); background-size: cover; background-position: center; }
     .marketplace-content { position: absolute; bottom: 16px; left: 16px; right: 16px; color: white; display: flex; justify-content: space-between; align-items: flex-end; }
     .marketplace-title { font-size: 24px; font-weight: 600; }
     .marketplace-subtitle { font-size: 16px; font-weight: 400; opacity: 0.7; margin-top: 4px; }
@@ -404,7 +407,7 @@
     </div>
     <div class="header" style="background: transparent; box-shadow: none; width: 100%;">
       <div class="menu-icon"><span></span><span></span></div>
-      <img src="assets/ua-next-logo.png" alt="UA NEXT" class="header-logo">
+      <img src="/assets/ua-next-logo.png" alt="UA NEXT" class="header-logo">
       <div class="header-spacer"></div>
     </div>
   </div>
@@ -414,21 +417,21 @@
     <!-- Workout Progress Cards -->
     <div class="workout-cards">
       <a href="workout-list.html" class="workout-card" data-workout="flexibility">
-        <video class="workout-card-video" autoplay loop muted playsinline><source src="assets/flexibility-video.mp4" type="video/mp4"></video>
+        <video class="workout-card-video" autoplay loop muted playsinline><source src="/assets/flexibility-video.mp4" type="video/mp4"></video>
         <div class="workout-card-content">
           <div class="workout-card-header"><div class="workout-card-title">Flexibility</div><div class="workout-card-time">23m left</div></div>
           <div class="workout-card-bottom"><div class="workout-card-percent">24%</div><div class="progress-bars"><div class="progress-bar filled"></div><div class="progress-bar filled"></div><div class="progress-bar"></div><div class="progress-bar"></div><div class="progress-bar"></div><div class="progress-bar"></div></div></div>
         </div>
       </a>
       <a href="strength-list.html" class="workout-card" data-workout="strength">
-        <video class="workout-card-video" autoplay loop muted playsinline><source src="assets/strength-video.mp4" type="video/mp4"></video>
+        <video class="workout-card-video" autoplay loop muted playsinline><source src="/assets/strength-video.mp4" type="video/mp4"></video>
         <div class="workout-card-content">
           <div class="workout-card-header"><div class="workout-card-title">Strength</div><div class="workout-card-time">12m left</div></div>
           <div class="workout-card-bottom"><div class="workout-card-percent">77%</div><div class="progress-bars"><div class="progress-bar filled"></div><div class="progress-bar filled"></div><div class="progress-bar filled"></div><div class="progress-bar filled"></div><div class="progress-bar filled"></div><div class="progress-bar"></div></div></div>
         </div>
       </a>
       <a href="breathing-list.html" class="workout-card" data-workout="breathing">
-        <video class="workout-card-video" autoplay loop muted playsinline><source src="assets/breathing-video.mp4" type="video/mp4"></video>
+        <video class="workout-card-video" autoplay loop muted playsinline><source src="/assets/breathing-video.mp4" type="video/mp4"></video>
         <div class="workout-card-content">
           <div class="workout-card-header"><div class="workout-card-title">Breathing</div><div class="workout-card-time">40m left</div></div>
           <div class="workout-card-bottom"><div class="workout-card-percent">10%</div><div class="progress-bars"><div class="progress-bar filled"></div><div class="progress-bar"></div><div class="progress-bar"></div><div class="progress-bar"></div><div class="progress-bar"></div><div class="progress-bar"></div></div></div>
@@ -440,9 +443,9 @@
     <div class="mood-section">
       <div class="mood-title">How are you feeling today</div>
       <div class="mood-options">
-        <div class="mood-option"><img src="assets/mood-happy.svg" alt="Happy"></div>
-        <div class="mood-option"><img src="assets/mood-neutral.svg" alt="Neutral"></div>
-        <div class="mood-option"><img src="assets/mood-sad.svg" alt="Sad"></div>
+        <div class="mood-option"><img src="/assets/mood-happy.svg" alt="Happy"></div>
+        <div class="mood-option"><img src="/assets/mood-neutral.svg" alt="Neutral"></div>
+        <div class="mood-option"><img src="/assets/mood-sad.svg" alt="Sad"></div>
       </div>
     </div>
 
@@ -509,15 +512,23 @@
     </div>
 
     <!-- Challenge Card -->
-    <a href="challenge-detail.html" class="challenge-card" style="background-image: url('assets/mind-body-balance.png')">
-      <div class="challenge-badge">New Challenge</div>
-      <div class="challenge-content"><div><div class="challenge-title">Mind Body Balance</div><div class="challenge-subtitle">Start the challenge today!</div></div><div class="arrow-button"><svg viewBox="0 0 24 24" fill="#0A0A0A"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div></div>
+    <a href="challenge-detail.html" class="challenge-card" style="background-image: url('/assets/mind-body-balance.png')">
+      <div class="challenge-content">
+        <div class="challenge-badge">New Challenge</div>
+        <div class="challenge-bottom">
+          <div class="challenge-text">
+            <div class="challenge-title">Mind Body Balance</div>
+            <div class="challenge-subtitle">Start the challenge today!</div>
+          </div>
+          <div class="arrow-button"><svg viewBox="0 0 24 24" fill="#0A0A0A"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div>
+        </div>
+      </div>
     </a>
 
     <!-- Feature Cards -->
     <div class="feature-cards">
-      <a href="mepod.html" class="feature-card with-image" style="background-image: url('assets/mepod-image.png')"><div class="feature-badge">New</div><div class="feature-content"><img src="assets/mepod-icon.svg" alt="MePod" class="mepod-icon"><div class="feature-title">MePod</div><div class="feature-subtitle">Your weekly MePod drops every Monday!</div></div></a>
-      <div class="feature-card with-image" style="background-image: url('assets/recommended-image.png')"><div class="feature-content"><img src="assets/recommended-icon.svg" alt="Recommended" class="recommended-icon"><div class="feature-title">Recommended workouts</div></div></div>
+      <a href="mepod.html" class="feature-card with-image" style="background-image: url('/assets/mepod-image.png')"><div class="feature-badge">New</div><div class="feature-content"><img src="/assets/mepod-icon.svg" alt="MePod" class="mepod-icon"><div class="feature-title">MePod</div><div class="feature-subtitle">Your weekly MePod drops every Monday!</div></div></a>
+      <div class="feature-card with-image" style="background-image: url('/assets/recommended-image.png')"><div class="feature-content"><img src="/assets/recommended-icon.svg" alt="Recommended" class="recommended-icon"><div class="feature-title">Recommended workouts</div></div></div>
     </div>
 
     <!-- Food Log -->
