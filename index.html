@@ -82,14 +82,132 @@
     .mood-option { display: flex; padding: 17px; justify-content: center; align-items: center; gap: 10px; flex: 1 0 0; align-self: stretch; border-radius: 8px; background: #F4F5F6; cursor: pointer; }
     .mood-option img { width: 24px; height: 24px; }
 
-    /* Stats Cards (Home feed) */
-    .stats-cards { display: flex; gap: 8px; padding: 0 0 0 16px; overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none; }
-    .stats-cards::-webkit-scrollbar { display: none; }
-    .stats-cards .stat-card { flex-shrink: 0; width: 354px; }
-    .stats-cards .bar-chart { gap: 12px; }
-    .stats-cards .bar-chart-bar { width: 32px; }
+    /* Unified Stats Card */
+    .unified-stats-card {
+      display: block;
+      margin: 0 16px;
+      padding: 20px;
+      background: #FFFFFF;
+      border-radius: 14px;
+    }
+    .unified-stats-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+    .unified-stats-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #0A0A0A;
+    }
+    .unified-stats-settings {
+      width: 36px;
+      height: 36px;
+      border: none;
+      background: #F4F5F6;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: background 0.2s ease;
+    }
+    .unified-stats-settings:hover {
+      background: #EAEAEA;
+    }
+    .unified-stats-settings svg {
+      width: 20px;
+      height: 20px;
+      color: #666;
+    }
+    .unified-stats-grid {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+    }
+    .unified-stat-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      flex: 1;
+      text-align: center;
+      text-decoration: none;
+      color: inherit;
+      padding: 8px 4px;
+      border-radius: 12px;
+      transition: background 0.2s ease;
+    }
+    .unified-stat-item:hover {
+      background: #F9F9F9;
+    }
 
-    .line-chart-icon { width: 120px; height: 80px; margin-top: auto; opacity: 0.3; }
+    /* Progress Ring */
+    .stat-progress-ring {
+      position: relative;
+      width: 72px;
+      height: 72px;
+      margin-bottom: 8px;
+    }
+    .stat-progress-ring svg {
+      width: 100%;
+      height: 100%;
+      transform: rotate(-90deg);
+    }
+    .stat-progress-ring .ring-bg {
+      fill: none;
+      stroke: #F0F0F0;
+      stroke-width: 6;
+    }
+    .stat-progress-ring .ring-progress {
+      fill: none;
+      stroke-width: 6;
+      stroke-linecap: round;
+      stroke-dasharray: 213.6;
+      stroke-dashoffset: calc(213.6 - (213.6 * var(--progress) / 100));
+      transition: stroke-dashoffset 0.6s ease;
+    }
+    .stat-progress-ring.steps .ring-progress { stroke: #14E25A; }
+    .stat-progress-ring.sleep .ring-progress { stroke: #6366F1; }
+    .stat-progress-ring.activity .ring-progress { stroke: #FF6B6B; }
+
+    .stat-ring-icon {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .stat-ring-icon svg {
+      width: 22px;
+      height: 22px;
+      transform: rotate(0deg);
+    }
+    .stat-progress-ring.steps .stat-ring-icon { color: #14E25A; }
+    .stat-progress-ring.sleep .stat-ring-icon { color: #6366F1; }
+    .stat-progress-ring.activity .stat-ring-icon { color: #FF6B6B; }
+
+    .unified-stat-value {
+      font-size: 16px;
+      font-weight: 700;
+      color: #0A0A0A;
+      margin-bottom: 2px;
+    }
+    .unified-stat-label {
+      font-size: 12px;
+      font-weight: 500;
+      color: rgba(10, 10, 10, 0.6);
+      margin-bottom: 2px;
+    }
+    .unified-stat-goal {
+      font-size: 10px;
+      font-weight: 500;
+      color: rgba(10, 10, 10, 0.4);
+    }
 
     /* Challenge Card */
     .challenge-card { margin: 0; border-radius: 0; overflow: hidden; position: relative; height: 327px; background-size: cover; background-position: center; background-color: #FFFFFF; display: block; text-decoration: none; transition: transform 0.2s ease; }
@@ -327,12 +445,66 @@
       </div>
     </div>
 
-    <!-- Stats Cards -->
-    <div class="stats-cards">
-      <a href="stats.html" class="stat-card"><div class="stat-card-header"><div><div class="stat-card-title">Steps</div><div class="stat-card-subtitle">Daily goal 20,000</div></div><svg class="stat-card-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div><div class="stat-card-chart"><div class="stat-card-value">110,122</div></div></a>
-      <a href="stats.html" class="stat-card"><div class="stat-card-header"><div><div class="stat-card-title">Sleep</div><div class="stat-card-subtitle">Daily average 7h 22m</div></div><svg class="stat-card-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div><div class="stat-card-chart"><div class="stat-card-value">6h</div></div></a>
-      <a href="stats.html" class="stat-card"><div class="stat-card-header"><div><div class="stat-card-title">Activity</div><div class="stat-card-subtitle">This weeks activity</div></div><svg class="stat-card-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div><div class="stat-card-value">1.7h</div><div class="bar-chart"><div class="bar-chart-bar" style="height: 40px;"></div><div class="bar-chart-bar" style="height: 30px;"></div><div class="bar-chart-bar" style="height: 50px;"></div><div class="bar-chart-bar" style="height: 20px;"></div><div class="bar-chart-bar" style="height: 70px;"></div><div class="bar-chart-bar" style="height: 90px;"></div><div class="bar-chart-bar" style="height: 60px;"></div></div><div class="bar-chart-labels"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div></a>
-      <a href="stats.html" class="stat-card"><div class="stat-card-header"><div><div class="stat-card-title">Go to stats</div><div class="stat-card-subtitle">Show all health indicators</div></div><svg class="stat-card-arrow" viewBox="0 0 24 24" fill="currentColor"><path d="M8.59 16.59L13.17 12 8.59 7.41 10 6l6 6-6 6-1.41-1.41z"/></svg></div><svg class="line-chart-icon" viewBox="0 0 60 40" fill="none" stroke="#0A0A0A" stroke-width="2"><polyline points="5,35 15,25 25,30 35,15 45,20 55,5"/></svg></a>
+    <!-- Stats Card -->
+    <div class="unified-stats-card">
+      <div class="unified-stats-header">
+        <div class="unified-stats-title">Today's Stats</div>
+        <button class="unified-stats-settings" id="statsSettingsBtn" aria-label="Stats settings">
+          <svg viewBox="0 0 24 24" fill="currentColor">
+            <path d="M19.14 12.94c.04-.31.06-.63.06-.94 0-.31-.02-.63-.06-.94l2.03-1.58c.18-.14.23-.41.12-.61l-1.92-3.32c-.12-.22-.37-.29-.59-.22l-2.39.96c-.5-.38-1.03-.7-1.62-.94l-.36-2.54c-.04-.24-.24-.41-.48-.41h-3.84c-.24 0-.43.17-.47.41l-.36 2.54c-.59.24-1.13.57-1.62.94l-2.39-.96c-.22-.08-.47 0-.59.22L2.74 8.87c-.12.21-.08.47.12.61l2.03 1.58c-.04.31-.06.63-.06.94s.02.63.06.94l-2.03 1.58c-.18.14-.23.41-.12.61l1.92 3.32c.12.22.37.29.59.22l2.39-.96c.5.38 1.03.7 1.62.94l.36 2.54c.05.24.24.41.48.41h3.84c.24 0 .44-.17.47-.41l.36-2.54c.59-.24 1.13-.56 1.62-.94l2.39.96c.22.08.47 0 .59-.22l1.92-3.32c.12-.22.07-.47-.12-.61l-2.01-1.58zM12 15.6c-1.98 0-3.6-1.62-3.6-3.6s1.62-3.6 3.6-3.6 3.6 1.62 3.6 3.6-1.62 3.6-3.6 3.6z"/>
+          </svg>
+        </button>
+      </div>
+      <div class="unified-stats-grid">
+        <a href="stats.html" class="unified-stat-item">
+          <div class="stat-progress-ring steps">
+            <svg viewBox="0 0 80 80">
+              <circle class="ring-bg" cx="40" cy="40" r="34"/>
+              <circle class="ring-progress" cx="40" cy="40" r="34" style="--progress: 55;"/>
+            </svg>
+            <div class="stat-ring-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13.5 5.5c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zM9.8 8.9L7 23h2.1l1.8-8 2.1 2v6h2v-7.5l-2.1-2 .6-3C14.8 12 16.8 13 19 13v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1L6 8.3V13h2V9.6l1.8-.7"/>
+              </svg>
+            </div>
+          </div>
+          <div class="unified-stat-value">11,012</div>
+          <div class="unified-stat-label">Steps</div>
+          <div class="unified-stat-goal">Goal: 20,000</div>
+        </a>
+        <a href="stats.html" class="unified-stat-item">
+          <div class="stat-progress-ring sleep">
+            <svg viewBox="0 0 80 80">
+              <circle class="ring-bg" cx="40" cy="40" r="34"/>
+              <circle class="ring-progress" cx="40" cy="40" r="34" style="--progress: 84;"/>
+            </svg>
+            <div class="stat-ring-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M12.34 2.02C6.59 1.82 2 6.42 2 12c0 5.52 4.48 10 10 10 3.71 0 6.93-2.02 8.66-5.02-7.51-.25-12.09-8.43-8.32-14.96z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="unified-stat-value">6h 45m</div>
+          <div class="unified-stat-label">Sleep</div>
+          <div class="unified-stat-goal">Goal: 8h</div>
+        </a>
+        <a href="stats.html" class="unified-stat-item">
+          <div class="stat-progress-ring activity">
+            <svg viewBox="0 0 80 80">
+              <circle class="ring-bg" cx="40" cy="40" r="34"/>
+              <circle class="ring-progress" cx="40" cy="40" r="34" style="--progress: 85;"/>
+            </svg>
+            <div class="stat-ring-icon">
+              <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M13.49 5.48c1.1 0 2-.9 2-2s-.9-2-2-2-2 .9-2 2 .9 2 2 2zm-3.6 13.9l1-4.4 2.1 2v6h2v-7.5l-2.1-2 .6-3c1.3 1.5 3.3 2.5 5.5 2.5v-2c-1.9 0-3.5-1-4.3-2.4l-1-1.6c-.4-.6-1-1-1.7-1-.3 0-.5.1-.8.1l-5.2 2.2v4.7h2v-3.4l1.8-.7-1.6 8.1-4.9-1-.4 2 7 1.4z"/>
+              </svg>
+            </div>
+          </div>
+          <div class="unified-stat-value">1.7h</div>
+          <div class="unified-stat-label">Activity</div>
+          <div class="unified-stat-goal">Goal: 2h</div>
+        </a>
+      </div>
     </div>
 
     <!-- Challenge Card -->
@@ -348,10 +520,10 @@
     </div>
 
     <!-- Food Log -->
-    <div class="food-log">
+    <div class="food-log" id="foodLogCard" style="cursor: pointer;">
       <div class="food-log-header">
         <div class="food-log-title">Today's Food</div>
-        <button class="food-log-camera-btn" aria-label="Log food with camera">
+        <button class="food-log-camera-btn" id="foodCameraBtn" aria-label="Log food with camera">
           <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 15.2c-1.8 0-3.2-1.4-3.2-3.2s1.4-3.2 3.2-3.2 3.2 1.4 3.2 3.2-1.4 3.2-3.2 3.2zm8-10.2h-3.2l-1.9-2H9.1L7.2 5H4c-1.1 0-2 .9-2 2v12c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2z"/></svg>
         </button>
       </div>
@@ -491,6 +663,49 @@
     </div>
   </div>
 
+  <!-- Food Camera Modal -->
+  <div class="modal-overlay camera-overlay" id="cameraModal">
+    <!-- Camera View -->
+    <div class="camera-view active" id="cameraView">
+      <button class="camera-cancel-link" id="cameraCancelTop">Cancel</button>
+      <div class="camera-viewfinder">
+        <video id="cameraVideo" autoplay playsinline></video>
+        <canvas id="cameraCanvas" style="display: none;"></canvas>
+      </div>
+      <div class="camera-controls">
+        <button class="camera-capture-btn" id="captureBtn">
+          <div class="capture-btn-inner"></div>
+        </button>
+      </div>
+    </div>
+
+    <!-- Rating View -->
+    <div class="camera-view" id="ratingView">
+      <button class="camera-cancel-link" id="ratingCancelTop">Cancel</button>
+      <div class="camera-photo-preview">
+        <img id="capturedPhoto" src="" alt="Captured food">
+      </div>
+      <div class="rating-buttons">
+        <button class="rating-btn" id="ratingBad" data-rating="bad">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+            <path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/>
+          </svg>
+        </button>
+        <button class="rating-btn" id="ratingGood" data-rating="good">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="32" height="32">
+            <path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/>
+          </svg>
+        </button>
+      </div>
+      <button class="camera-cancel-btn-bottom" id="ratingCancelBottom">
+        <svg viewBox="0 0 24 24" fill="currentColor" width="20" height="20">
+          <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+        </svg>
+        Cancel
+      </button>
+    </div>
+  </div>
+
   <!-- Celebration Overlay -->
   <div class="celebration-overlay" id="celebrationOverlay">
     <div class="celebration-content">
@@ -510,7 +725,7 @@
     initVideoLoop('.workout-card-video');
 
     // Initialize horizontal scroll
-    initHorizontalScroll('.workout-cards, .stats-cards');
+    initHorizontalScroll('.workout-cards');
 
     // Initialize mood selection
     initMoodSelection();
@@ -524,6 +739,9 @@
 
     // Initialize AI Chat interface
     initAIChat();
+
+    // Initialize Food Camera
+    initFoodCamera();
 
     // Check for workout completion and trigger celebration
     checkWorkoutCompletion();

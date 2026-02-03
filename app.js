@@ -647,6 +647,349 @@ function initAIChat() {
   }
 }
 
+// ===========================================
+// FOOD CAMERA & LOGGING
+// ===========================================
+
+let cameraStream = null;
+let capturedImageData = null;
+
+/**
+ * Initialize food camera functionality
+ */
+function initFoodCamera() {
+  const cameraModal = document.getElementById('cameraModal');
+  const cameraBtn = document.getElementById('foodCameraBtn');
+  const foodLogCard = document.getElementById('foodLogCard');
+
+  if (!cameraModal || !cameraBtn) return;
+
+  // Camera button opens camera modal
+  cameraBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    openCameraModal();
+  });
+
+  // Food log card navigates to food log page
+  if (foodLogCard) {
+    foodLogCard.addEventListener('click', (e) => {
+      if (e.target.closest('.food-log-camera-btn')) return;
+      window.location.href = 'food-log.html';
+    });
+  }
+
+  // Cancel buttons
+  const cameraCancelTop = document.getElementById('cameraCancelTop');
+  const ratingCancelTop = document.getElementById('ratingCancelTop');
+  const ratingCancelBottom = document.getElementById('ratingCancelBottom');
+
+  if (cameraCancelTop) {
+    cameraCancelTop.addEventListener('click', closeCameraModal);
+  }
+  if (ratingCancelTop) {
+    ratingCancelTop.addEventListener('click', closeCameraModal);
+  }
+  if (ratingCancelBottom) {
+    ratingCancelBottom.addEventListener('click', closeCameraModal);
+  }
+
+  // Capture button
+  const captureBtn = document.getElementById('captureBtn');
+  if (captureBtn) {
+    captureBtn.addEventListener('click', capturePhoto);
+  }
+
+  // Rating buttons
+  const ratingGood = document.getElementById('ratingGood');
+  const ratingBad = document.getElementById('ratingBad');
+
+  if (ratingGood) {
+    ratingGood.addEventListener('click', () => logFood('good'));
+  }
+  if (ratingBad) {
+    ratingBad.addEventListener('click', () => logFood('bad'));
+  }
+}
+
+/**
+ * Open camera modal and start camera stream
+ */
+async function openCameraModal() {
+  const cameraModal = document.getElementById('cameraModal');
+  const cameraView = document.getElementById('cameraView');
+  const ratingView = document.getElementById('ratingView');
+  const video = document.getElementById('cameraVideo');
+
+  if (!cameraModal) return;
+
+  // Reset views
+  cameraView.classList.add('active');
+  ratingView.classList.remove('active');
+
+  // Show modal
+  cameraModal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+
+  // Start camera
+  try {
+    cameraStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: 'environment' },
+      audio: false
+    });
+    video.srcObject = cameraStream;
+  } catch (err) {
+    console.error('Camera access denied:', err);
+    alert('Camera access is required to log food. Please allow camera access and try again.');
+    closeCameraModal();
+  }
+}
+
+/**
+ * Close camera modal and stop camera stream
+ */
+function closeCameraModal() {
+  const cameraModal = document.getElementById('cameraModal');
+  const video = document.getElementById('cameraVideo');
+
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(track => track.stop());
+    cameraStream = null;
+  }
+
+  if (video) {
+    video.srcObject = null;
+  }
+
+  if (cameraModal) {
+    cameraModal.classList.remove('active');
+  }
+
+  document.body.style.overflow = '';
+  capturedImageData = null;
+}
+
+/**
+ * Capture photo from video stream
+ */
+function capturePhoto() {
+  const video = document.getElementById('cameraVideo');
+  const canvas = document.getElementById('cameraCanvas');
+  const capturedPhoto = document.getElementById('capturedPhoto');
+  const cameraView = document.getElementById('cameraView');
+  const ratingView = document.getElementById('ratingView');
+
+  if (!video || !canvas) return;
+
+  // Set canvas size to match video
+  canvas.width = video.videoWidth;
+  canvas.height = video.videoHeight;
+
+  // Draw video frame to canvas
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(video, 0, 0);
+
+  // Get image data
+  capturedImageData = canvas.toDataURL('image/jpeg', 0.8);
+
+  // Show captured image in rating view
+  if (capturedPhoto) {
+    capturedPhoto.src = capturedImageData;
+  }
+
+  // Stop camera stream
+  if (cameraStream) {
+    cameraStream.getTracks().forEach(track => track.stop());
+    cameraStream = null;
+  }
+  video.srcObject = null;
+
+  // Switch to rating view
+  cameraView.classList.remove('active');
+  ratingView.classList.add('active');
+}
+
+/**
+ * Log food item with rating
+ */
+function logFood(rating) {
+  if (!capturedImageData) return;
+
+  const foodLog = getFoodLog();
+
+  const newEntry = {
+    id: generateId(),
+    image: capturedImageData,
+    rating: rating,
+    timestamp: Date.now()
+  };
+
+  foodLog.unshift(newEntry);
+  saveFoodLog(foodLog);
+
+  // Close modal
+  closeCameraModal();
+
+  // Update food list on home page if present
+  updateFoodListDisplay();
+}
+
+/**
+ * Get food log from localStorage
+ */
+function getFoodLog() {
+  try {
+    const log = localStorage.getItem('foodLog');
+    return log ? JSON.parse(log) : [];
+  } catch (e) {
+    return [];
+  }
+}
+
+/**
+ * Save food log to localStorage
+ */
+function saveFoodLog(log) {
+  try {
+    localStorage.setItem('foodLog', JSON.stringify(log));
+  } catch (e) {
+    console.error('Failed to save food log:', e);
+  }
+}
+
+/**
+ * Generate unique ID
+ */
+function generateId() {
+  return Date.now().toString(36) + Math.random().toString(36).substr(2);
+}
+
+/**
+ * Format timestamp for display
+ */
+function formatFoodTime(timestamp) {
+  const date = new Date(timestamp);
+  return date.toLocaleTimeString('en-US', {
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
+  });
+}
+
+/**
+ * Format date for display
+ */
+function formatFoodDate(timestamp) {
+  const date = new Date(timestamp);
+  const today = new Date();
+  const yesterday = new Date(today);
+  yesterday.setDate(yesterday.getDate() - 1);
+
+  if (date.toDateString() === today.toDateString()) {
+    return 'Today';
+  } else if (date.toDateString() === yesterday.toDateString()) {
+    return 'Yesterday';
+  } else {
+    return date.toLocaleDateString('en-US', {
+      month: 'short',
+      day: 'numeric'
+    });
+  }
+}
+
+/**
+ * Update food list display on home page
+ */
+function updateFoodListDisplay() {
+  const foodList = document.querySelector('.food-list');
+  if (!foodList) return;
+
+  const foodLog = getFoodLog();
+  const todayEntries = foodLog.filter(entry => {
+    const entryDate = new Date(entry.timestamp).toDateString();
+    const today = new Date().toDateString();
+    return entryDate === today;
+  }).slice(0, 3);
+
+  if (todayEntries.length === 0) return;
+
+  // Clear existing items and add logged items
+  foodList.innerHTML = '';
+
+  todayEntries.forEach(entry => {
+    const item = document.createElement('div');
+    item.className = 'food-list-item';
+    item.innerHTML = `
+      <div class="food-list-image" style="background-image: url('${entry.image}')"></div>
+      <div class="food-list-info">
+        <div class="food-list-name">Logged meal</div>
+        <div class="food-list-detail">${entry.rating === 'good' ? 'Healthy choice' : 'Could be better'}</div>
+      </div>
+      <div class="food-list-time">${formatFoodTime(entry.timestamp)}</div>
+    `;
+    foodList.appendChild(item);
+  });
+}
+
+/**
+ * Render food log page
+ */
+function renderFoodLogPage() {
+  const entriesContainer = document.getElementById('foodLogEntries');
+  const emptyState = document.getElementById('foodLogEmpty');
+
+  if (!entriesContainer) return;
+
+  const foodLog = getFoodLog();
+
+  if (foodLog.length === 0) {
+    entriesContainer.style.display = 'none';
+    if (emptyState) emptyState.style.display = 'flex';
+    return;
+  }
+
+  entriesContainer.style.display = 'flex';
+  if (emptyState) emptyState.style.display = 'none';
+
+  // Group by date
+  const grouped = {};
+  foodLog.forEach(entry => {
+    const dateKey = formatFoodDate(entry.timestamp);
+    if (!grouped[dateKey]) grouped[dateKey] = [];
+    grouped[dateKey].push(entry);
+  });
+
+  entriesContainer.innerHTML = '';
+
+  Object.entries(grouped).forEach(([date, entries]) => {
+    // Date header
+    const dateHeader = document.createElement('div');
+    dateHeader.className = 'food-log-date';
+    dateHeader.textContent = date;
+    entriesContainer.appendChild(dateHeader);
+
+    // Entries
+    entries.forEach(entry => {
+      const entryEl = document.createElement('div');
+      entryEl.className = 'food-log-entry';
+      entryEl.innerHTML = `
+        <div class="food-log-entry-image" style="background-image: url('${entry.image}')"></div>
+        <div class="food-log-entry-info">
+          <div class="food-log-entry-time">${formatFoodTime(entry.timestamp)}</div>
+          <div class="food-log-entry-date">${entry.rating === 'good' ? 'Healthy choice' : 'Could improve'}</div>
+        </div>
+        <div class="food-log-entry-rating ${entry.rating}">
+          ${entry.rating === 'good'
+            ? '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M1 21h4V9H1v12zm22-11c0-1.1-.9-2-2-2h-6.31l.95-4.57.03-.32c0-.41-.17-.79-.44-1.06L14.17 1 7.59 7.59C7.22 7.95 7 8.45 7 9v10c0 1.1.9 2 2 2h9c.83 0 1.54-.5 1.84-1.22l3.02-7.05c.09-.23.14-.47.14-.73v-2z"/></svg>'
+            : '<svg viewBox="0 0 24 24" fill="currentColor"><path d="M15 3H6c-.83 0-1.54.5-1.84 1.22l-3.02 7.05c-.09.23-.14.47-.14.73v2c0 1.1.9 2 2 2h6.31l-.95 4.57-.03.32c0 .41.17.79.44 1.06L9.83 23l6.59-6.59c.36-.36.58-.86.58-1.41V5c0-1.1-.9-2-2-2zm4 0v12h4V3h-4z"/></svg>'
+          }
+        </div>
+      `;
+      entriesContainer.appendChild(entryEl);
+    });
+  });
+}
+
 // Export for module usage (if needed in future)
 if (typeof module !== 'undefined' && module.exports) {
   module.exports = {
@@ -667,6 +1010,9 @@ if (typeof module !== 'undefined' && module.exports) {
     initSummaryModal,
     formatTime,
     initWorkoutTimer,
-    initAIChat
+    initAIChat,
+    initFoodCamera,
+    getFoodLog,
+    renderFoodLogPage
   };
 }
