@@ -160,6 +160,7 @@ img, video {
 .header-logo {
   height: 48px;
   width: auto;
+  padding-bottom: 16px;
 }
 
 /* Top Navigation (Home page) */
