@@ -951,7 +951,7 @@ img, video {
   transform: translateX(-50%);
   width: 100%;
   max-width: var(--max-width);
-  background: rgba(246, 246, 246, 0.90);
+  background: linear-gradient(181deg, rgba(255, 255, 255, 0.00) 5.73%, rgba(255, 255, 255, 0.87) 59.58%, #FFF 86.36%);
   padding: var(--space-lg);
   display: flex;
   justify-content: space-between;
